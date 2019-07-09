@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter/widgets.dart' as Widgets;
 import 'package:location/location.dart';
 import 'package:toast/toast.dart';
+import 'package:exif/exif.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:dotted_border/dotted_border.dart';
 
@@ -27,6 +28,7 @@ class ImageUploadState extends State<ImageUpload> {
   String imgbaseUrl =
       Constants.shared.baseImageUrl(); // 'http://18.222.111.142/images/';
   bool _isUploading = false;
+  bool _isGPSbased = null;              // get image location data from current location
 
   File _selectedImage4Upload;
 
@@ -45,15 +47,9 @@ class ImageUploadState extends State<ImageUpload> {
   DateTime _date; // Used for upload
 
   Location location = Location();
-
   @override
   void initState() {
     super.initState();
-
-    location.onLocationChanged().listen((LocationData currentLocation) {
-      txtLatCtl.text = currentLocation.latitude.toString();
-      txtLngCtl.text = currentLocation.longitude.toString();
-    });
 
     jobNoList.add(new Models.JobNumber(
         id: 0, jobnumber: "Please select..", company_id: 0));
@@ -113,15 +109,37 @@ class ImageUploadState extends State<ImageUpload> {
                             ),
                           ),
                         ),
-                        TextFormField(
-                          decoration: const InputDecoration(
-                              hintText: 'Latitude', labelText: 'Latitude'),
-                          controller: txtLatCtl,
-                        ),
-                        TextFormField(
-                          controller: txtLngCtl,
-                          decoration: const InputDecoration(
-                              labelText: 'Longitude', hintText: 'Longitude'),
+                        Row(
+                          children: <Widget>[
+                            new Expanded(
+                                child: TextFormField(
+                              decoration: const InputDecoration(
+                                  hintText: 'Latitude', labelText: 'Latitude'),
+                              controller: txtLatCtl,
+                            )),
+                            new SizedBox(
+                              width: 5,
+                            )
+                            ,
+                            new Expanded(
+                              child: TextFormField(
+                                controller: txtLngCtl,
+                                decoration: const InputDecoration(
+                                    labelText: 'Longitude',
+                                    hintText: 'Longitude'),
+                              ),
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.image),
+                              onPressed: _onGetFromImageButtonPressed,
+                              color: this._isGPSbased == true || this._isGPSbased == null ? null : Theme.of(context).primaryColor,
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.gps_fixed),
+                              onPressed: _onGetFromGPSButtonPressed,
+                              color: this._isGPSbased == false || this._isGPSbased == null ? null : Theme.of(context).primaryColor,
+                            )
+                          ],
                         ),
                         TextFormField(
                           controller: txtTitleCtl,
@@ -201,7 +219,8 @@ class ImageUploadState extends State<ImageUpload> {
                           onChanged: (dt) => setState(() => _date = dt),
                         ),
                         new Container(
-                            padding: const EdgeInsets.only(top: 20.0, bottom: 10.0),
+                            padding:
+                                const EdgeInsets.only(top: 20.0, bottom: 10.0),
                             child: _isUploading == false
                                 ? new RaisedButton(
                                     child: const Text('UPLOAD'),
@@ -256,6 +275,9 @@ class ImageUploadState extends State<ImageUpload> {
     print(picture);
     setState(() {
       this._selectedImage4Upload = picture;
+      if (this._isGPSbased == false) {
+        _onGetFromImageButtonPressed();
+      }
     });
   }
 
@@ -268,6 +290,89 @@ class ImageUploadState extends State<ImageUpload> {
 
     setState(() {
       this._selectedImage4Upload = gallery;
+      if (this._isGPSbased == false) {
+        _onGetFromImageButtonPressed();
+      }
+    });
+  }
+
+  _onGetFromImageButtonPressed() async{
+
+    if (_selectedImage4Upload != null) {
+      Globals.shared.showToast(context, "Getting location from image",
+          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+
+      readExifFromBytes(
+          await new File(_selectedImage4Upload.path).readAsBytes()).then((
+          Map<String, IfdTag> data) {
+
+        if (data == null || data.isEmpty) {
+          Globals.shared.showToast(context, "No EXIF information found",
+              duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+          setState(() {
+            this._isGPSbased = false;
+            txtLatCtl.text = "";
+            txtLngCtl.text = "";
+          });
+
+        } else if (data.containsKey("GPS GPSLatitude") && data.containsKey("GPS GPSLongitude")) {
+          var lat1 = double.parse(data["GPS GPSLatitude"].values[0].toString());
+          var lat2 = double.parse(data["GPS GPSLatitude"].values[1].toString()) / 60;
+          var latsec1 = double.parse(data["GPS GPSLatitude"].values[2].toString().split('/')[0]);
+          var latsec2 = double.parse(data["GPS GPSLatitude"].values[2].toString().split('/')[1]);
+          var lat3 = latsec1 / latsec2 / 3600;
+
+          var lng1 = double.parse(data["GPS GPSLongitude"].values[0].toString());
+          var lng2 = double.parse(data["GPS GPSLongitude"].values[1].toString()) / 60;
+          var lngsec1 = double.parse(data["GPS GPSLongitude"].values[2].toString().split('/')[0]);
+          var lngsec2 = double.parse(data["GPS GPSLongitude"].values[2].toString().split('/')[1]);
+          var lng3 = lngsec1 / lngsec2 / 3600;
+
+          print(data["GPS GPSLatitude"].values[0]);
+          print(data["GPS GPSLatitude"].values[1]);
+          print(data["GPS GPSLatitude"].values[2]);
+          print(data["GPS GPSLongitude"].values[0]);
+          print(data["GPS GPSLongitude"].values[1]);
+          print(data["GPS GPSLongitude"].values[2]);
+
+          var latitude = lat1 + lat2 + lat3;
+          var longitude = lng1 + lng2 + lng3;
+          print(latitude);
+          print(longitude);
+
+          setState(() {
+            this._isGPSbased = false;
+            txtLatCtl.text = latitude.toStringAsFixed(7);
+            txtLngCtl.text = longitude.toStringAsFixed(7);
+          });
+
+        } else {
+          Globals.shared.showToast(context, "There is no GPS information in this image",
+              duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+          setState(() {
+            this._isGPSbased = false;
+            txtLatCtl.text = "";
+            txtLngCtl.text = "";
+          });
+        }
+
+      });
+
+    } else {
+      Globals.shared.showToast(context, "Please select image first",
+          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+    }
+  }
+
+  _onGetFromGPSButtonPressed() async {
+    setState(() {
+      this._isGPSbased = true;
+      location.getLocation().then((currentLocation) {
+        txtLatCtl.text = currentLocation.latitude.toString();
+        txtLngCtl.text = currentLocation.longitude.toString();
+      });
+      Globals.shared.showToast(context, "Getting location from GPS",
+          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
     });
   }
 
@@ -318,6 +423,9 @@ class ImageUploadState extends State<ImageUpload> {
             txtUrgencyCtl.text = "";
             selectedJobNumber = jobNoList[0];
             _date = DateTime.now();
+            _isGPSbased = null;
+            txtLatCtl.text = "";
+            txtLngCtl.text = "";
           });
           //loadMore();
         } else {

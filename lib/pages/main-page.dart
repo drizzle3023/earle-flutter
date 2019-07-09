@@ -54,6 +54,7 @@ class MainPageState extends State<MainPage> {
     super.initState();
 
     // _showSearchDialog();
+    Future.delayed(Duration.zero, () => _showSearchDialog());
   }
 
   void _updateImageList(
@@ -137,6 +138,8 @@ class MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     TextStyle style = TextStyle(
         fontFamily: 'Montserrat', fontSize: 15, fontWeight: FontWeight.bold);
+
+
 
     return WillPopScope(
         onWillPop: _onWillPop,
@@ -289,10 +292,9 @@ class MainPageState extends State<MainPage> {
   _showSearchDialog() async {
     showDialog(
         context: context,
-        builder: (context) => AlertDialog(
-              title: Text("aaa"),
-              content: Text("bbb"),
-            ));
+        builder: (_) => SearchPage(
+          getSearchResult: _getSearchResult,
+        ));
   }
 
   showMarkers(List<Models.Image> images) {

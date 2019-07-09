@@ -46,7 +46,7 @@ class SharedPreferencesHelper {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     prefs.remove(_api_token);
-    prefs.remove(_user_email);
+    //prefs.remove(_user_email);
     prefs.remove(_user_name);
     prefs.remove(_user_id);
     prefs.remove(_company_id);

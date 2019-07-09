@@ -39,6 +39,7 @@ dependencies:
   dotted_border: ^0.1.1
   cached_network_image: ^1.0.0
   flutter_spinkit: ^3.1.0
+  exif: ^1.0.1
 
 dev_dependencies:
   flutter_test:

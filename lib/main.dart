@@ -11,25 +11,22 @@ import 'api-manager.dart';
 import 'libs/global.dart';
 
 void main() {
-  SharedPreferencesHelper.getApiToken().then((data) {
-    if (data == '') {
+  SharedPreferencesHelper.getUserData().then((data) {
+    if (Globals.shared.apiToken == '') {
       runApp(App(isLoggedIn: false));
-    }
-    else {
-      SharedPreferencesHelper.getUserData().then((data) {
-        ApiManager.shared.getJobNumbers().then((msgType) {
-          if (msgType == MsgType.SUCCESS) {
-            if(Globals.shared.userRole == UserRole.SUPER) {
-              ApiManager.shared.getCompanyList().then((data) {
-                runApp(App(isLoggedIn: true));
-              });
-            } else {
+    } else {
+      ApiManager.shared.getJobNumbers().then((msgType) {
+        if (msgType == MsgType.SUCCESS) {
+          if (Globals.shared.userRole == UserRole.SUPER) {
+            ApiManager.shared.getCompanyList().then((data) {
               runApp(App(isLoggedIn: true));
-            }
+            });
           } else {
-            runApp(App(isLoggedIn: false));
+            runApp(App(isLoggedIn: true));
           }
-        });
+        } else {
+          runApp(App(isLoggedIn: false));
+        }
       });
     }
   });

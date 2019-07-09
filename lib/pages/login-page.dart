@@ -17,7 +17,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 15);
 
-  final emailTEC = TextEditingController();
+  TextEditingController emailTEC = TextEditingController();
   final passwordTEC = TextEditingController();
 
   bool _isLoading = false;
@@ -25,6 +25,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
+    emailTEC.text = Globals.shared.userEmail;
   }
 
 //  CalData _objCalData;

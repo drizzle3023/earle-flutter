@@ -219,7 +219,8 @@ class ApiManager {
         return MsgType.SUCCESS;
       }
     } else {
-      throw Exception('Failed to get jobnumbers!');
+      //throw Exception('Failed to get jobnumbers!');
+      return MsgType.FAIL;
     }
   }
 

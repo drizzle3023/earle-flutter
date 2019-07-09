@@ -142,11 +142,15 @@ class ImageDetailState extends State<ImageDetail> {
                           child: TextFormField(
                             enabled: widget.editable,
                             decoration: InputDecoration(labelText: 'JobNumber'),
-                            initialValue: Globals
-                                .glb_jobnumbers_with_id[
-                                    widget.image.jobnumber_id]
-                                .jobnumber
-                                .toString(),
+                            initialValue: Globals.glb_jobnumbers_with_id[
+                                        widget.image.jobnumber_id] !=
+                                    null
+                                ? Globals
+                                    .glb_jobnumbers_with_id[
+                                        widget.image.jobnumber_id]
+                                    .jobnumber
+                                    .toString()
+                                : '',
                           ),
                         ),
                         Visibility(
@@ -213,7 +217,8 @@ class ImageDetailState extends State<ImageDetail> {
                         Visibility(
                           visible: widget.editable,
                           child: new Container(
-                              padding: const EdgeInsets.only(top: 20.0, bottom: 10.0),
+                              padding: const EdgeInsets.only(
+                                  top: 20.0, bottom: 10.0),
                               child: _isSaving == false
                                   ? new RaisedButton(
                                       child: const Text('Save'),
