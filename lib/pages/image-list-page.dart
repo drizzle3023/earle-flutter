@@ -179,8 +179,8 @@ class ImageListPageState extends State<ImageListPage> {
                             },
                             child: GridTileBar(
                               backgroundColor: Colors.black45,
-                              title: _GridTitleText(image.description != null
-                                  ? image.description
+                              title: _GridTitleText(image.title != null
+                                  ? image.title
                                   : " "),
                               subtitle: _GridTitleText(
                                   image.latitude.toString() +

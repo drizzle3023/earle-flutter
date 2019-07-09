@@ -8,7 +8,6 @@ class Image {
   double latitude;
   double longitude;
   String route;
-  String description;
   String asset;
   String comment;
   String urgency;
@@ -17,7 +16,7 @@ class Image {
   User user;
 
   Image({this.id, this.filename, this.jobnumber_id, this.latitude, this.longitude, this.route,
-    this.description, this.asset, this.comment, this.urgency, this.title, this.upload_ts});
+    this.asset, this.comment, this.urgency, this.title, this.upload_ts});
 
   factory Image.fromJson(Map<String, dynamic> json) {
     return Image(
@@ -27,7 +26,6 @@ class Image {
         latitude: double.parse(json['latitude']),
         longitude: double.parse(json['longitude']),
         route: json['route'],
-        description: json['description'],
         asset: json['asset'],
         comment: json['comment'],
         urgency: json['urgency'],

@@ -84,7 +84,6 @@ class ApiManager {
         body: {
           'title' : searchClause["title"] ?? "",
           'route' : searchClause["route"] ?? "",
-          'description': searchClause["description"] ?? "",
           'comment': searchClause["comment"] ?? "",
           'job_id': searchClause["job_id"] == null ? "0" : searchClause["job_id"].toString(),
           'start_date': searchClause["start_date"] == null ? "0" : searchClause["start_date"].toString(),
@@ -122,7 +121,7 @@ class ApiManager {
   }
 
   Future<MsgType> doUpload({File file, String lat, String lng, String title, int jobNo_id, String route,
-    String description, String asset, String comment, String urgency, int upload_timestamp}) async {
+    String asset, String comment, String urgency, int upload_timestamp}) async {
 
     var uri = Uri.parse(this.baseUrl + '/image/upload');
     var request = new http.MultipartRequest('POST', uri);
@@ -133,7 +132,6 @@ class ApiManager {
     request.fields['title'] = title;
     request.fields['jobNo_id'] = jobNo_id.toString();
     request.fields['route'] = route;
-    request.fields['description'] = description;
     request.fields['asset'] = asset;
     request.fields['comment'] = comment;
     request.fields['urgency'] = urgency;
@@ -169,7 +167,7 @@ class ApiManager {
   }
 
   Future<MsgType> updateImage({String lat, String lng, String title, int jobNo_id, String route,
-    String description, String asset, String comment, String urgency, int upload_timestamp, int image_id}) async {
+    String asset, String comment, String urgency, int upload_timestamp, int image_id}) async {
 
     final response = await http.post(this.baseUrl + '/image/update', headers: {
       'X-API-TOKEN': Globals.shared.apiToken
@@ -179,7 +177,6 @@ class ApiManager {
           'lan': lng,
           'title' : title,
           'route' : route,
-          'description': description,
           'asset': asset,
           'comment': comment,
           'job_id': jobNo_id.toString(),

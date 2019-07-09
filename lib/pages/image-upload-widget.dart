@@ -34,7 +34,6 @@ class ImageUploadState extends State<ImageUpload> {
   var txtLngCtl = new TextEditingController();
   var txtTitleCtl = new TextEditingController();
   var txtRouteCtl = new TextEditingController();
-  var txtDescriptionCtl = new TextEditingController();
   var txtAssetCtl = new TextEditingController();
   var txtCommentCtl = new TextEditingController();
   var txtUrgencyCtl = new TextEditingController();
@@ -163,14 +162,6 @@ class ImageUploadState extends State<ImageUpload> {
                             hintText: 'Route',
                             labelText: 'Route',
                           ),
-                        ),
-                        new TextFormField(
-                          controller: txtDescriptionCtl,
-                          decoration: const InputDecoration(
-                            hintText: 'Description',
-                            labelText: 'Description',
-                          ),
-                          keyboardType: TextInputType.datetime,
                         ),
                         new TextFormField(
                           controller: txtAssetCtl,
@@ -306,7 +297,6 @@ class ImageUploadState extends State<ImageUpload> {
               title: txtTitleCtl.text,
               jobNo_id: selectedJobNumber.id,
               route: txtRouteCtl.text,
-              description: txtDescriptionCtl.text,
               asset: txtAssetCtl.text,
               comment: txtCommentCtl.text,
               urgency: txtUrgencyCtl.text,
@@ -323,7 +313,6 @@ class ImageUploadState extends State<ImageUpload> {
             _selectedImage4Upload = null;
             txtTitleCtl.text = "";
             txtRouteCtl.text = "";
-            txtDescriptionCtl.text = "";
             txtAssetCtl.text = "";
             txtCommentCtl.text = "";
             txtUrgencyCtl.text = "";

@@ -106,7 +106,7 @@ class SearchResultState extends State<SearchResult> {
                               },
                               child: GridTileBar(
                                 backgroundColor: Colors.black45,
-                                title: _GridTitleText( image.description != null ? image.description : " "),
+                                title: _GridTitleText( image.title != null ? image.title : " "),
                                 subtitle: _GridTitleText( image.latitude.toString() + ',' + image.longitude.toString()),
                                 trailing: image.user.id == Globals.shared.userId ?
                                 Icon(

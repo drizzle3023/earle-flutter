@@ -40,7 +40,6 @@ class ImageDetailState extends State<ImageDetail> {
   var txtLngCtl = new TextEditingController();
   var txtTitleCtl = new TextEditingController();
   var txtRouteCtl = new TextEditingController();
-  var txtDescriptionCtl = new TextEditingController();
   var txtAssetCtl = new TextEditingController();
   var txtCommentCtl = new TextEditingController();
   var txtUrgencyCtl = new TextEditingController();
@@ -60,9 +59,6 @@ class ImageDetailState extends State<ImageDetail> {
         widget.image.title != null ? widget.image.title.toString() : '';
     txtRouteCtl.text =
         widget.image.route != null ? widget.image.route.toString() : '';
-    txtDescriptionCtl.text = widget.image.description != null
-        ? widget.image.description.toString()
-        : '';
     txtAssetCtl.text =
         widget.image.asset != null ? widget.image.asset.toString() : '';
     txtCommentCtl.text =
@@ -190,11 +186,6 @@ class ImageDetailState extends State<ImageDetail> {
                           controller: txtRouteCtl,
                         ),
                         TextFormField(
-                            enabled: widget.editable,
-                            decoration:
-                                InputDecoration(labelText: 'Description'),
-                            controller: txtDescriptionCtl),
-                        TextFormField(
                           enabled: widget.editable,
                           decoration: InputDecoration(labelText: 'Asset'),
                           controller: txtAssetCtl,
@@ -261,7 +252,6 @@ class ImageDetailState extends State<ImageDetail> {
               title: txtTitleCtl.text,
               jobNo_id: selectedJobNumber.id,
               route: txtRouteCtl.text,
-              description: txtDescriptionCtl.text,
               asset: txtAssetCtl.text,
               comment: txtCommentCtl.text,
               urgency: txtUrgencyCtl.text,
