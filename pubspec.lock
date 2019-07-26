@@ -35,7 +35,7 @@ packages:
       name: cached_network_image
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.0"
+    version: "1.1.0"
   camera:
     dependency: "direct main"
     description:
@@ -124,14 +124,14 @@ packages:
       name: flutter_cache_manager
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.0"
+    version: "1.1.0"
   flutter_launcher_icons:
     dependency: "direct main"
     description:
       name: flutter_launcher_icons
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.7.2"
+    version: "0.7.2+1"
   flutter_spinkit:
     dependency: "direct main"
     description:
@@ -150,7 +150,7 @@ packages:
       name: google_maps_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.5.19"
+    version: "0.5.19+2"
   http:
     dependency: "direct main"
     description:
@@ -178,7 +178,7 @@ packages:
       name: image_picker
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.6.0+10"
+    version: "0.6.0+17"
   intl:
     dependency: transitive
     description:
@@ -227,7 +227,7 @@ packages:
       name: path_provider
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.5.0+1"
+    version: "1.1.2"
   pedantic:
     dependency: transitive
     description:
@@ -255,7 +255,7 @@ packages:
       name: shared_preferences
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.5.3+1"
+    version: "0.5.3+4"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -281,7 +281,7 @@ packages:
       name: sqflite
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.5"
+    version: "1.1.6+1"
   stack_trace:
     dependency: transitive
     description:
@@ -330,7 +330,7 @@ packages:
       name: toast
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.4"
+    version: "0.1.5"
   transparent_image:
     dependency: "direct main"
     description:
